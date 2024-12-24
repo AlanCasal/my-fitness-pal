@@ -3,6 +3,7 @@ import { View, Text } from 'react-native';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { styles } from './styles';
+import { colors } from '@/src/utils/colors';
 
 interface FoodListItemProps {
 	label: string;
@@ -18,7 +19,7 @@ const FoodListItem = ({ item }: { item: FoodListItemProps }) => {
 				<Text style={styles.subtitle}>{`${item.cal} cal, ${item.brand}`}</Text>
 			</View>
 
-			<AntDesign name="pluscircleo" size={24} color="royalblue" />
+			<AntDesign name="pluscircleo" size={24} color={colors.royalBlue} />
 		</View>
 	);
 };

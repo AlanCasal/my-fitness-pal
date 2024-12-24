@@ -1,8 +1,9 @@
+import { colors } from '@/src/utils/colors';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
 	content: {
-		backgroundColor: 'gainsboro',
+		backgroundColor: colors.gray1,
 		padding: 10,
 		borderRadius: 5,
 		flexDirection: 'row',
@@ -18,6 +19,6 @@ export const styles = StyleSheet.create({
 		fontSize: 16,
 	},
 	subtitle: {
-		color: 'dimgray',
+		color: colors.dimGray,
 	},
 });
