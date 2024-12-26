@@ -1,53 +1,37 @@
-import { View, Text, FlatList, Button } from 'react-native';
+import { View, Text, FlatList, Button, ActivityIndicator } from 'react-native';
 import React from 'react';
 import { Link } from 'expo-router';
 import { styles } from './styles';
-import FoodListItem from '@/src/components/FoodListItem';
+import { gql, useQuery } from '@apollo/client';
+import { colors } from '@/src/utils/colors';
+import FoodLogListItem from '@/src/components/FoodLogListItem';
 
-const foodItems = [
-	{
-		food: {
-			foodId: '1',
-			label: 'Apple',
-			nutrients: { ENERC_KCAL: 100 },
-			brand: 'Brand A',
-		},
-	},
-	{
-		food: {
-			foodId: '2',
-			label: 'Banana',
-			nutrients: { ENERC_KCAL: 150 },
-			brand: 'Brand B',
-		},
-	},
-	{
-		food: {
-			foodId: '3',
-			label: 'Orange',
-			nutrients: { ENERC_KCAL: 120 },
-			brand: 'Brand C',
-		},
-	},
-	{
-		food: {
-			foodId: '4',
-			label: 'Pineapple',
-			nutrients: { ENERC_KCAL: 100 },
-			brand: 'Brand D',
-		},
-	},
-	{
-		food: {
-			foodId: '5',
-			label: 'Coffee',
-			nutrients: { ENERC_KCAL: 10 },
-			brand: 'Brand E',
-		},
-	},
-];
+const query = gql`
+	query foodLogsForDate($date: Date!, $user_id: String!) {
+		foodLogsForDate(user_id: $user_id, date: $date) {
+			id
+			label
+			food_id
+			kcal
+			user_id
+			created_at
+		}
+	}
+`;
+
+const USER_ID = 'foxOne';
+const TODAY_DATE = new Date().toISOString().split('T')[0];
 
 const Home = () => {
+	const { data, loading, error } = useQuery(query, {
+		variables: {
+			date: TODAY_DATE,
+			user_id: USER_ID,
+		},
+	});
+
+	if (error) return <Text>Error: {error.message}</Text>;
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.header}>
@@ -60,11 +44,16 @@ const Home = () => {
 					<Button title="ADD FOOD" />
 				</Link>
 			</View>
-			<FlatList
-				data={foodItems}
-				renderItem={({ item }) => <FoodListItem item={item} />}
-				contentContainerStyle={styles.flatList}
-			/>
+
+			{loading && <ActivityIndicator size="large" color={colors.royalBlue} />}
+
+			{data && (
+				<FlatList
+					data={data?.foodLogsForDate}
+					renderItem={({ item }) => <FoodLogListItem item={item} />}
+					contentContainerStyle={styles.flatList}
+				/>
+			)}
 		</View>
 	);
 };
