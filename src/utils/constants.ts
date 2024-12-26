@@ -1,0 +1,8 @@
+export const STEPZEN_API_KEY = process.env.EXPO_PUBLIC_STEPZEN_API_KEY;
+export const STEPZEN_URL = process.env.EXPO_PUBLIC_STEPZEN_URL;
+export const MONGO_USERNAME = process.env.EXPO_PUBLIC_MONGO_USERNAME;
+export const MONGO_PASSWORD = process.env.EXPO_PUBLIC_MONGO_PASSWORD;
+export const MONGO_CONNECTION_STRING =
+	process.env.EXPO_PUBLIC_MONGO_CONNECTION_STRING;
+export const EDAMAM_APP_ID = process.env.EXPO_PUBLIC_EDAMAM_APP_ID;
+export const EDAMAM_APP_KEY = process.env.EXPO_PUBLIC_EDAMAM_APP_KEY;

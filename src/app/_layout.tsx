@@ -1,16 +1,21 @@
 import React from 'react';
 import { Stack } from 'expo-router';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { STEPZEN_API_KEY, STEPZEN_URL } from '../utils/constants';
 
-const queryClient = new QueryClient();
+const client = new ApolloClient({
+	uri: STEPZEN_URL,
+	cache: new InMemoryCache(),
+	headers: {
+		Authorization: `apikey ${STEPZEN_API_KEY}`,
+	},
+});
 
 const RootLayout = () => {
 	return (
-		<QueryClientProvider client={queryClient}>
-			<Stack>
-				<Stack.Screen name="index" options={{ title: 'Home' }} />
-			</Stack>
-		</QueryClientProvider>
+		<ApolloProvider client={client}>
+			<Stack />
+		</ApolloProvider>
 	);
 };
 
