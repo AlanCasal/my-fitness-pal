@@ -1,6 +1,6 @@
 import React from 'react';
-import Home from '../screens/Home';
+import HomeScreen from '@/src/screens/Home';
 
-const App = () => <Home />;
+const Home = () => <HomeScreen />;
 
-export default App;
+export default Home;

@@ -1,67 +1,68 @@
-import {
-	View,
-	FlatList,
-	TextInput,
-	Button,
-	Text,
-	ActivityIndicator,
-} from 'react-native';
-import React, { useState } from 'react';
+import { View, Text, FlatList, Button } from 'react-native';
+import React from 'react';
+import { Link } from 'expo-router';
 import { styles } from './styles';
 import FoodListItem from '@/src/components/FoodListItem';
-import { gql, useLazyQuery } from '@apollo/client';
-import { colors } from '@/src/utils/colors';
-import { SearchResult } from '@/src/utils/types';
 
-const query = gql`
-	query search($ingr: String) {
-		search(ingr: $ingr) {
-			text
-			hints {
-				food {
-					label
-					brand
-					foodId
-					nutrients {
-						ENERC_KCAL
-					}
-				}
-			}
-		}
-	}
-`;
+const foodItems = [
+	{
+		food: {
+			foodId: '1',
+			label: 'Apple',
+			nutrients: { ENERC_KCAL: 100 },
+			brand: 'Brand A',
+		},
+	},
+	{
+		food: {
+			foodId: '2',
+			label: 'Banana',
+			nutrients: { ENERC_KCAL: 150 },
+			brand: 'Brand B',
+		},
+	},
+	{
+		food: {
+			foodId: '3',
+			label: 'Orange',
+			nutrients: { ENERC_KCAL: 120 },
+			brand: 'Brand C',
+		},
+	},
+	{
+		food: {
+			foodId: '4',
+			label: 'Pineapple',
+			nutrients: { ENERC_KCAL: 100 },
+			brand: 'Brand D',
+		},
+	},
+	{
+		food: {
+			foodId: '5',
+			label: 'Coffee',
+			nutrients: { ENERC_KCAL: 10 },
+			brand: 'Brand E',
+		},
+	},
+];
 
 const Home = () => {
-	const [search, setSearch] = useState('');
-	const [runSearch, { data, loading, error }] =
-		useLazyQuery<SearchResult>(query);
-
-	const handleSearch = () => {
-		runSearch({ variables: { ingr: search } });
-	};
-
-	if (error) return <Text>Error: {error.message}</Text>;
-
-	const items = data?.search?.hints || [];
-
 	return (
 		<View style={styles.container}>
-			<TextInput
-				placeholder="Search..."
-				style={styles.searchInput}
-				value={search}
-				onChangeText={setSearch}
-			/>
-			{search && <Button title="Search" onPress={handleSearch} />}
-
-			{loading && <ActivityIndicator size="large" color={colors.royalBlue} />}
-
+			<View style={styles.header}>
+				<Text style={styles.subtitle}>Calories</Text>
+				<Text>1770 - 360 = 1410 kcal</Text>
+			</View>
+			<View style={styles.header}>
+				<Text style={styles.subtitle}>Today's Logged Food</Text>
+				<Link href="/search" asChild>
+					<Button title="ADD FOOD" />
+				</Link>
+			</View>
 			<FlatList
-				data={items}
-				renderItem={({ item, index }) => (
-					<FoodListItem key={item.food.foodId + index} item={item} />
-				)}
-				ListEmptyComponent={() => !loading && <Text>Search a food</Text>}
+				data={foodItems}
+				renderItem={({ item }) => <FoodListItem item={item} />}
 				contentContainerStyle={styles.flatList}
 			/>
 		</View>
